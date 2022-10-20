@@ -1,0 +1,23 @@
+name: Setup Cloud SDK
+on:
+  workflow_call:
+    secrets:
+      PROJECT_ID:
+        required: true
+      SERVICE_ACCOUNT_EMAIL:
+        required: true
+      GCP_SA_KEY:
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+        
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@main
+      with:
+        project_id: p${{ secrets.PROJECT_ID }}
+        service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
