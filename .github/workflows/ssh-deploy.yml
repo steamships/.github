@@ -1,0 +1,24 @@
+name: Auto deploy
+on:
+  workflow_call:
+    secrets:
+      PRIVATE_KEY:
+        required: true
+      USER_NAME:
+        required: true
+      HOST_NAME:
+        required: true
+      SERVER_PORT:
+        required: true
+      DEPLOY_PATH:
+        required: true
+jobs:
+  ssh-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} -p ${{ secrets.SERVER_PORT }} "cd ${{ secrets.DEPLOY_PATH }} && git fetch --prune && git pull origin main" 
