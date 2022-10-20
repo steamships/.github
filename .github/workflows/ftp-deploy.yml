@@ -1,0 +1,31 @@
+name: ftp deploy
+on:
+  workflow_call:
+    inputs:
+      source-path:
+        description: デプロイしたいディレクトリのフルパス
+        type: string
+        required: true
+      destination-path:
+        description: デプロイ先フルパス
+        type: string
+        required: true
+    secrets:
+      FTP_SERVER:
+        required: true
+      FTP_USERNAME:
+        required: true
+      FTP_PASSWORD:
+        required: true
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ${{ inputs.source-path }}
+          server-dir: ${{ inputs.destination-path }}
