@@ -1,0 +1,36 @@
+name: ssh git clone
+on:
+  workflow_call:
+    inputs:
+      target-branch:
+        description: 参照したいブランチ
+        type: string
+        required: true
+      source-path:
+        description: コンパイルしたいscssファイルのフルパス
+        type: string
+        required: true
+      destination-path:
+        description: コンパイルしたcssの出力先フルパス
+        type: string
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source Git branch
+        uses: actions/checkout@v2
+        with:
+            ref: ${{ inputs.target-branch }}
+            
+      - name: 引数として与えたscssをcssにコンパイルする
+        uses: gha-utilities/sass-build@v0.4.8
+        with:
+          source: |
+            ${{ inputs.source-path }}
+          destination: |
+            ${{ inputs.destination-path }}
+          sourceMap: true
+          sourceMapEmbed: true
+          sourceMapContents: true
+          outFile: ${{ inputs.destination-path }}
