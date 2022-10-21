@@ -1,0 +1,26 @@
+name: npm build deploy via ftp
+on:
+  push:
+    paths-ignore:  # これらへの変更でプッシュされてもgithub actionsを動かさない
+      - ‘.github/**’
+      - ‘!.github/workflows/**’
+      - ‘docs/**’
+      - ‘README.md’
+      - ‘.gitignore’
+      - ‘.gitmodules’
+      
+jobs:
+  steps:
+    - runs-on: ubuntu-latest
+    - name: build
+      uses: steamships/.github/.github/workflows/nodejs-build.yml@main
+      
+    - name: Commit output
+      uses: stefanzweifel/git-auto-commit-action@v4.2.0
+      with:
+        commit_message: “自動ビルド:${{github.sha}}”
+        branch: “${GITHUB_REF#refs/heads/}”
+        
+    - name: deploy-via-ftp
+      uses: steamships/.github/.github/workflows/ftp-deploy.yml@main
+      secrets: inherit
