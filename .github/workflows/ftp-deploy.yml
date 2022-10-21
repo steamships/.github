@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: "${GITHUB_REF#refs/heads/}"
+          ref: ${{GITHUB_REF#refs/heads/}}
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
