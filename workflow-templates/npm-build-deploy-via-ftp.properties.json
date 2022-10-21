@@ -1,7 +1,6 @@
 {
     "name": "npm-build-deploy-via-ftp",
     "description": "npm build後dist以下をftpで指定のサーバーに転送するアクション",
-    "iconName": "example-icon",
     "categories": [
         "npm"
     ],
