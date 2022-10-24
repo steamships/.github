@@ -19,7 +19,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4.2.0
         with:
           commit_message: “自動ビルド:${{github.sha}}”
-          branch: “${GITHUB_REF#refs/heads/}”
+          branch: “${{GITHUB_REF#refs/heads/}}”
 
   deploy-via-ftp:
     uses: steamships/.github/.github/workflows/ftp-deploy.yml@main
