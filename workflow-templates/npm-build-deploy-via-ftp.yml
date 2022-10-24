@@ -16,10 +16,14 @@ jobs:
   Commit-output:
     runs-on: ubuntu-latest
     steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
       - uses: stefanzweifel/git-auto-commit-action@v4.2.0
         with:
           commit_message: “自動ビルド:${{github.sha}}”
-          branch: “${{GITHUB_REF#refs/heads/}}”
+          branch: ${{ steps.extract_branch.outputs.branch }}
 
   deploy-via-ftp:
     uses: steamships/.github/.github/workflows/ftp-deploy.yml@main
