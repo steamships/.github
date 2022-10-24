@@ -1,4 +1,4 @@
-name: node js build
+name: node js build(this workflow commits files under dist)
 on:
   workflow_call:
   
@@ -24,3 +24,7 @@ jobs:
     - run: |
         npm ci
         npm run build --if-present
+    - uses: stefanzweifel/git-auto-commit-action@v4.2.0
+      with:
+        commit_message: “自動ビルド:${{github.sha}}”
+        branch: “${GITHUB_REF#refs/heads/}”
